@@ -1,6 +1,5 @@
 const dotenv = require('dotenv');
 dotenv.config();
-console.log(`Your API key is ${process.env.API_KEY}`);
 
 const express = require('express')
 var cors = require('cors')
@@ -18,20 +17,31 @@ app.get('/', function (req, res) {
     res.sendFile('dist/index.html')
 })
 
-app.post('/api/sentiment', async (req, res) => {
-    const apiUrl = 'https://api.meaningcloud.com/sentiment-2.1';
-    const formdata = new FormData();
-    formdata.append('key', process.env.API_KEY);
-    formdata.append('txt', req.body.text);
-    formdata.append('lang', 'en');
+app.post('/api/coordinates', async (req, res) => {
+    const radarApiUrl = 'https://api.radar.io/v1/search/autocomplete?query=';
+    const weatherApiUrl = 'https://api.weatherapi.com/v1/future.json?';
+    const pixabayApiUrl = 'https://pixabay.com/api/?'
+    let responsePackage = []
 
     try {
-        const apiResponse = await fetch(apiUrl, {
-            method: 'POST',
-            body: formdata,
+        const locationApiResponse = await fetch(`${radarApiUrl}${req.body.city}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `${process.env.RADAR_KEY}`
+            }
         });
-        const apiJson = await apiResponse.json();
-        res.send(apiJson);
+        const locationJsonData = await locationApiResponse.json();
+        responsePackage.push(locationJsonData)
+
+        const weatherApiResponse = await fetch(`${weatherApiUrl}key=${process.env.WEATHER_KEY}&q=${req.body.city}&dt=${req.body.date}`);
+        const weatherJsonData = await weatherApiResponse.json();
+        responsePackage.push(weatherJsonData)
+
+        const pixaApiResponse = await fetch(`${pixabayApiUrl}key=${process.env.PIXA_KEY}&q=${req.body.city}&image_type=photo`)
+        const pixaJsonData = await pixaApiResponse.json();
+        responsePackage.push(pixaJsonData)
+
+        res.send(responsePackage);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');

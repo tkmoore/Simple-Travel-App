@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Test</title>
         <link rel="stylesheet" href="/styles/resets.css">
         <link rel="stylesheet" href="/styles/base.css">
@@ -13,29 +14,34 @@
     <body>
 
         <header>
-            <div class="">
-                Logo
-            </div>
-            <div class="">
-                navigation
-            </div>
+            <h1>Travel Planner</h1>
         </header>
 
         <main>
             <section>
-                <form class="" onsubmit="return Client.apiSubmit(event)">
-                    <input id="name" type="text" name="input" value="" placeholder="API">
-                    <input type="submit" name="" value="submit" onclick="return Client.apiSubmit(event)" onsubmit="return Client.apiSubmit(event)">
+                <form class="trip-details" onsubmit="return Client.apiSubmit(event)">
+                    <p>Trip Start:</p>
+                    <input type="date" id="trip-start" name="trip-start" value="2024-02-28" min="2018-01-01" max="2030-12-31">
+                    <p>Trip End:</p>
+                    <input type="date" id="trip-end" name="trip-end" value="2024-02-28" min="2018-01-01" max="2030-12-31">
+                    <p>Location:</p>
+                    <input id="name" type="text" name="input" value="" placeholder="Location: Ex. Paris">
                 </form>
             </section>
-            <section>
-                <strong>Form Results:</strong>
+            <section class="trip-details">
+                <strong>Trip Information:</strong>
+                <!-- Dynamically add image here based on trip location -->
+                <div id="trip-image"><img id="trip-img" src="" alt=""></div>
                 <div id="results"></div>
+            </section>
+            <section class="trip-actions">
+                <button type="submit" name="" value="Save Trip" onclick="return Client.apiSubmit(event)" onsubmit="return Client.apiSubmit(event)"> Save Trip</button>
+                <button>Remove Trip</button>
             </section>
         </main>
 
         <footer>
-            <p>This is a footer</p>
+            <p>&copy; TM LLC</p>
         </footer>
 
         <script>
