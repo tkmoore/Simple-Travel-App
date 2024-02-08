@@ -11,19 +11,23 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('dist'))
 
-console.log(__dirname)
+module.exports = app;
 
+// Root path
 app.get('/', function (req, res) {
     res.sendFile('dist/index.html')
 })
 
+// API post path
 app.post('/api/coordinates', async (req, res) => {
+    // Declare API URLs
     const radarApiUrl = 'https://api.radar.io/v1/search/autocomplete?query=';
     const weatherApiUrl = 'https://api.weatherapi.com/v1/future.json?';
     const pixabayApiUrl = 'https://pixabay.com/api/?'
-    let responsePackage = []
+    let responsePackage = [] // Package for the contents of various API requests
 
     try {
+        // Location API call
         const locationApiResponse = await fetch(`${radarApiUrl}${req.body.city}`, {
             method: 'GET',
             headers: {
@@ -33,14 +37,17 @@ app.post('/api/coordinates', async (req, res) => {
         const locationJsonData = await locationApiResponse.json();
         responsePackage.push(locationJsonData)
 
+        // Weather API call
         const weatherApiResponse = await fetch(`${weatherApiUrl}key=${process.env.WEATHER_KEY}&q=${req.body.city}&dt=${req.body.date}`);
         const weatherJsonData = await weatherApiResponse.json();
         responsePackage.push(weatherJsonData)
 
+        // Image API call
         const pixaApiResponse = await fetch(`${pixabayApiUrl}key=${process.env.PIXA_KEY}&q=${req.body.city}&image_type=photo`)
         const pixaJsonData = await pixaApiResponse.json();
         responsePackage.push(pixaJsonData)
 
+        // Send craft response package back to the client
         res.send(responsePackage);
     } catch (error) {
         console.error('Error:', error);
@@ -49,6 +56,10 @@ app.post('/api/coordinates', async (req, res) => {
 });
 
 // designates what port the app will listen to for incoming requests
-app.listen(8081, function () {
-    console.log('Example app listening on port 8081!')
-})
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(8081, function () {
+      console.log('Example app listening on port 8081!')
+    });
+  }
+
+  module.exports = app;
