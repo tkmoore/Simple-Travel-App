@@ -13,7 +13,7 @@ describe("Testing the submit functionality", () => {
     }),
     test("If passed non alpha-numeric value, return false", () => {
         const result = checkForValidText('%$%^*(');
-        expect(global.alert).toHaveBeenCalledWith('Input contains invalid characters. Only letters, numbers, periods, and spaces are allowed.');
+        expect(global.alert).toHaveBeenCalledWith('Input contains invalid characters. No numbers or special charaters allowed.');
         expect(result).toBe(false);
     })
 });

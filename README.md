@@ -4,23 +4,30 @@
 
 Once you clone the project, you will still need to install everything:
 
-`cd` into the project folder `evaluate-news-nlp` and run:
+`cd` into the project folder `Simple-Travel-App` and run:
 
-- `git checkout refresh-2019`
 - `npm install`
 
 ## Environment Variables
 
 In the root of your project directory, create a file called ".env"
-Fill the .env file with your API key like this:
+Fill the .env file with your API keys. Follow the links below to create your API key:
 
-```
-API_KEY=**************************
-```
+[Radar](https://radar.com/login)
+
+- RADAR_KEY=
+
+[WeatherAPI](https://www.weatherapi.com/)
+
+- WEATHER_KEY=
+
+[Pixabay](https://pixabay.com/)
+
+- PIXA_KEY=
 
 ## Running
 
-Run the project with two simple commands:
+Run the project with two simple commands, this will start the project on localhost:8081:
 
 - `npm run build-prod`
 - `npm start`
